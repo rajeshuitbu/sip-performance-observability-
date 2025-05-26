@@ -10,6 +10,29 @@ This project sets up a complete SIP call monitoring solution using:
 * **Grafana** for visualizing SIP call KPIs.
 
 ---
+Architecture Overview
+
++----------------+        +----------------+        +--------------+
+|                | SIP    |                | Metrics|              |
+|   SIPp Load    +------->|    Asterisk    +------->|  Telegraf    |
+|   Generator    |        |  SIP Server    |        | (exec plugin)|
+|                |        |                |        +--------------+
++----------------+        +----------------+               |
+                                                               | Metrics (HTTP)
+                                                               v
+                                                    +--------------------+
+                                                    |    Prometheus      |
+                                                    |   (Metrics Store)  |
+                                                    +--------------------+
+                                                               |
+                                                               | Query & Visualization
+                                                               v
+                                                    +--------------------+
+                                                    |     Grafana        |
+                                                    |  (Dashboard UI)    |
+                                                    +--------------------+
+
+
 
 ## 📦 Components & Installation
 
@@ -18,9 +41,13 @@ This project sets up a complete SIP call monitoring solution using:
 ```bash
 sudo apt update
 sudo apt install -y asterisk
+sudo systemctl enable asterisk
+sudo systemctl start asterisk
+
 ```
 
 Configure basic Asterisk SIP accounts in `/etc/asterisk/pjsip.conf` and dialplans in `/etc/asterisk/extensions.conf`.
+Enable the logs on asterisk console go to interactive mode using astersik -rvvv and give 
 
 ### 2. SIPp Installation
 
