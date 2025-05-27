@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<scenario name="REGISTER without auth challenge">
+  <!-- Send the first REGISTER request -->
+  <send retrans="500">
+    <![CDATA[
+REGISTER sip:172.31.17.9 SIP/2.0
+Via: SIP/2.0/UDP [local_ip]:[local_port];branch=z9hG4bK-[call_number]
+Max-Forwards: 70
+From: <sip:2000@172.31.17.9>;tag=[call_number]
+To: <sip:2000@172.31.17.9>
+Call-ID: [call_id]
+CSeq: 1 REGISTER
+Contact: <sip:2000@[local_ip]:[local_port]>
+Expires: 3600
+Content-Length: 0
+    ]]>
+  </send>
+
+  <!-- Expecting a 200 OK response -->
+  <recv response="200" />
+</scenario>
+

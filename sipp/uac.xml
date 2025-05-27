@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="Basic Call From 2000">
+
+  <send retrans="500">
+    <![CDATA[
+    INVITE sip:2000@172.31.17.9 SIP/2.0
+    Via: SIP/2.0/UDP [local_ip]:[local_port];branch=z9hG4bK[call_number]
+    From: "2000" <sip:2000@172.31.17.9>;tag=[call_number]
+    To: <sip:2000@172.31.17.9>
+    Call-ID: [call_id]
+    CSeq: 1 INVITE
+    Contact: <sip:2000@[local_ip]:[local_port]>
+    Max-Forwards: 70
+    Subject: SIPp call
+    Content-Type: application/sdp
+    Content-Length: [len]
+
+    v=0
+    o=user1 53655765 2353687637 IN IP4 [local_ip]
+    s=-
+    c=IN IP4 [local_ip]
+    t=0 0
+    m=audio [media_port] RTP/AVP 0
+    a=rtpmap:0 PCMU/8000
+    ]]>
+  </send>
+
+  <recv response="100" optional="true"/>
+  <recv response="180" optional="true"/>
+  <recv response="200"/>
+  
+  <send>
+    <![CDATA[
+    ACK sip:2000@172.31.17.9 SIP/2.0
+    Via: SIP/2.0/UDP [local_ip]:[local_port];branch=z9hG4bK[call_number]
+    From: "2000" <sip:2000@172.31.17.9>;tag=[call_number]
+    To: <sip:2000@172.31.17.9>;tag=[call_number] <!-- Use call_number here for To header -->
+    Call-ID: [call_id]
+    CSeq: 1 ACK
+    Contact: <sip:2000@[local_ip]:[local_port]>
+    Max-Forwards: 70
+    Content-Length: 0
+    ]]>
+  </send>
+
+  <pause milliseconds="5000"/>
+
+  <send>
+    <![CDATA[
+    BYE sip:2000@172.31.17.9 SIP/2.0
+    Via: SIP/2.0/UDP [local_ip]:[local_port];branch=z9hG4bK[call_number]
+    From: "2000" <sip:2000@172.31.17.9>;tag=[call_number]
+    To: <sip:2000@172.31.17.9>;tag=[call_number]
+    Call-ID: [call_id]
+    CSeq: 2 BYE
+    Max-Forwards: 70
+    Content-Length: 0
+    ]]>
+  </send>
+
+  <recv response="200" />
+</scenario>
+
